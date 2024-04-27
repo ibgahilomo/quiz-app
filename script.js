@@ -60,19 +60,25 @@ function selectAnswer(e) {
 
     setStatusClass(document.body, correct);
     Array.from(answerButtonElement.children).forEach(button => {
-        setStatusClass(button, button.dataset.correct === 'true');
+        button.removeEventListener('click', selectAnswer); // Remove event listener to prevent further clicks
+        if (button !== selectedButton) {
+            button.disabled = true; // Disable other answer buttons
+        }
     });
+    
     if (shuffledQuestions.length > currentQuestionIndex + 1) {
         nextButton.classList.remove('hide');
     } else {
         startButton.innerText = 'Restart';
         startButton.classList.remove('hide');
     }
+    
     if (correct) {
         quizScore++;
         rightAnswerElement.innerText = quizScore;
     }
 }
+
 
 function setStatusClass(element, correct) {
     clearStatusClass(element);
